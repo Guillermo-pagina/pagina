@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>REVOX SYSTEM</title>
+
+<link rel="icon" href="Imagenes/favicon.ico">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050816;
+color:white;
+overflow-x:hidden;
+}
+
+header{
+padding:30px;
+text-align:center;
+background:linear-gradient(90deg,#001f5c,#5c0000);
+}
+
+.logo{
+width:120px;
+height:120px;
+border-radius:50%;
+border:4px solid #4da3ff;
+margin-bottom:15px;
+object-fit:cover;
+}
+
+header h1{
+font-size:50px;
+color:#4da3ff;
+}
+
+header p{
+margin-top:10px;
+font-size:18px;
+}
+
+.container{
+width:95%;
+margin:auto;
+padding:40px 0;
+}
+
+.cards{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(320px,1fr));
+gap:30px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+padding:30px;
+border-radius:25px;
+backdrop-filter:blur(10px);
+box-shadow:0 0 20px rgba(0,0,0,0.5);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 25px rgba(77,163,255,0.6);
+}
+
+.card h2{
+color:#4da3ff;
+margin-bottom:15px;
+}
+
+.formula{
+font-size:30px;
+text-align:center;
+margin:20px 0;
+color:#ff4d4d;
+}
+
+.input-group{
+margin-top:15px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+}
+
+.input-group input,
+textarea{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#111827;
+color:white;
+font-size:16px;
+outline:none;
+}
+
+textarea{
+height:180px;
+resize:none;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:20px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#2563eb,#dc2626);
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.03);
+opacity:0.9;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+border-radius:15px;
+background:#0f172a;
+border-left:5px solid #4da3ff;
+line-height:1.8;
+}
+
+canvas{
+margin-top:20px;
+background:white;
+border-radius:15px;
+padding:10px;
+}
+
+.simulation{
+margin-top:20px;
+height:100px;
+background:#0f172a;
+border-radius:15px;
+position:relative;
+overflow:hidden;
+}
+
+.box{
+width:60px;
+height:60px;
+background:linear-gradient(45deg,#2563eb,#dc2626);
+position:absolute;
+top:20px;
+left:0;
+border-radius:12px;
+transition:2s;
+}
+
+.team-grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:30px;
+}
+
+.member{
+background:#0f172a;
+padding:20px;
+border-radius:20px;
+border-left:5px solid #4da3ff;
+}
+
+.member h3{
+color:#4da3ff;
+margin-bottom:10px;
+}
+
+.member a{
+color:#4da3ff;
+text-decoration:none;
+font-size:17px;
+}
+
+footer{
+text-align:center;
+padding:25px;
+color:#999;
+margin-top:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<img src="Imagenes/android-chrome-192x192.png" class="logo">
+
+<h1>REVOX SYSTEM</h1>
+
+<p>
+Creado por estudiantes de Universidad Mariano Galvez
+</p>
+
+</header>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+
+<h2>Primera Ley de Newton</h2>
+
+<div class="formula">
+ΣF = 0
+</div>
+
+<div class="input-group">
+<label>Fuerza Izquierda (N)</label>
+<input type="number" id="f1">
+</div>
+
+<div class="input-group">
+<label>Fuerza Derecha (N)</label>
+<input type="number" id="f2">
+</div>
+
+<button onclick="resolverPrimeraLey()">
+Resolver Primera Ley
+</button>
+
+<div class="result" id="resultado1"></div>
+
+<div class="result" id="procedimiento1"></div>
+
+<canvas id="grafica1"></canvas>
+
+</div>
+
+<div class="card">
+
+<h2>Segunda Ley de Newton</h2>
+
+<div class="formula">
+F = m × a
+</div>
+
+<div class="input-group">
+<label>Masa (kg)</label>
+<input type="number" id="masa">
+</div>
+
+<div class="input-group">
+<label>Fuerza (N)</label>
+<input type="number" id="fuerza">
+</div>
+
+<div class="input-group">
+<label>Fricción (N)</label>
+<input type="number" id="friccion">
+</div>
+
+<button onclick="resolverSegundaLey()">
+Resolver Segunda Ley
+</button>
+
+<div class="result" id="resultado2"></div>
+
+<div class="result" id="procedimiento2"></div>
+
+<div class="simulation">
+<div class="box" id="box"></div>
+</div>
+
+<canvas id="grafica2"></canvas>
+
+</div>
+
+<div class="card">
+
+<h2>Tercera Ley de Newton</h2>
+
+<div class="formula">
+F₁ = -F₂
+</div>
+
+<div class="input-group">
+<label>Fuerza Aplicada (N)</label>
+<input type="number" id="accion">
+</div>
+
+<button onclick="resolverTercera Ley()">
+Resolver Tercera Ley
+</button>
+
+<div class="result" id="resultado3"></div>
+
+<div class="result" id="procedimiento3"></div>
+
+<canvas id="grafica3"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Detector Inteligente de Problemas</h2>
+
+<p>
+Pega un problema y el sistema detectará automáticamente:
+</p>
+
+<ul style="margin-top:15px; margin-left:20px; line-height:2;">
+<li>Qué Ley de Newton usar</li>
+<li>Qué datos encontró</li>
+<li>Dónde debes ingresar cada dato</li>
+<li>Qué resultado obtendrás</li>
+</ul>
+
+<textarea id="problema"
+placeholder="Ejemplo:
+
+Una caja de 50 kg recibe una fuerza de 400 N y existe una fricción de 100 N">
+</textarea>
+
+<button onclick="detectarLey()">
+Analizar Problema
+</button>
+
+<div class="result" id="resultadoProblema">
+Esperando problema...
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Equipo de Desarrollo</h2>
+
+<div class="team-grid">
+
+<div class="member">
+
+<h3>HUGO CORONADO</h3>
+
+<p>
+
+<a href="https://wa.me/50245551464"
+target="_blank">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+width="28"
+style="vertical-align:middle; margin-right:8px;">
+
+Contactar por WhatsApp
+
+</a>
+
+</p>
+
+</div>
+
+<div class="member">
+
+<h3>BRANDON BOSBELY</h3>
+
+<p>
+
+<a href="https://wa.me/50251150147"
+target="_blank">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+width="28"
+style="vertical-align:middle; margin-right:8px;">
+
+Contactar por WhatsApp
+
+</a>
+
+</p>
+
+</div>
+
+<div class="member">
+
+<h3>MARDOQUEO ABIGAIL</h3>
+
+<p>
+
+<a href="https://wa.me/50236431005"
+target="_blank">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+width="28"
+style="vertical-align:middle; margin-right:8px;">
+
+Contactar por WhatsApp
+
+</a>
+
+</p>
+
+</div>
+
+<div class="member">
+
+<h3>YEIMS WILTON</h3>
+
+<p>
+
+<a href="https://wa.me/50259997334"
+target="_blank">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+width="28"
+style="vertical-align:middle; margin-right:8px;">
+
+Contactar por WhatsApp
+
+</a>
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+PROYECTO FINAL DE FISICA I</footer>
+
+<script>
+
+function detectarLey(){
+
+let texto =
+document.getElementById('problema')
+.value.toLowerCase();
+
+texto = texto
+.replace(/[.,]/g,' ')
+.replace(/\s+/g,' ');
+
+let masa = 'No detectada';
+let fuerza = 'No detectada';
+let friccion = '0';
+
+let masaMatch =
+texto.match(/(\d+)\s*kg/);
+
+if(masaMatch){
+masa = masaMatch[1];
+}
+
+let fuerzas =
+texto.match(/(\d+)\s*n/g);
+
+if(fuerzas){
+
+if(fuerzas[0]){
+fuerza =
+fuerzas[0].replace('n','');
+}
+
+if(fuerzas[1]){
+friccion =
+fuerzas[1].replace('n','');
+}
+
+}
+
+let ley = '';
+let instrucciones = '';
+
+if(
+texto.includes('masa') ||
+texto.includes('fuerza') ||
+texto.includes('kg') ||
+texto.includes('n')
+){
+
+ley = 'Segunda Ley de Newton';
+
+let aceleracion =
+(
+(parseFloat(fuerza)||0) -
+(parseFloat(friccion)||0)
+)
+/(parseFloat(masa)||1);
+
+instrucciones = `
+
+<h2>Datos Detectados</h2>
+
+<ul>
+
+<li>Masa: ${masa} kg</li>
+
+<li>Fuerza: ${fuerza} N</li>
+
+<li>Fricción: ${friccion} N</li>
+
+</ul>
+
+<br>
+
+<h2>Dónde ingresar cada dato</h2>
+
+<ul>
+
+<li>
+Masa → Input "Masa (kg)"
+</li>
+
+<li>
+Fuerza → Input "Fuerza (N)"
+</li>
+
+<li>
+Fricción → Input "Fricción (N)"
+</li>
+
+</ul>
+
+<br>
+
+<h2>Resultado esperado</h2>
+
+a = ${aceleracion.toFixed(2)} m/s²
+
+`;
+
+}
+
+else if(
+texto.includes('equilibrio') ||
+texto.includes('reposo') ||
+texto.includes('inercia')
+){
+
+ley = 'Primera Ley de Newton';
+
+instrucciones = `
+<h2>Usa la tarjeta:</h2>
+Primera Ley de Newton
+`;
+
+}
+
+else if(
+texto.includes('accion') ||
+texto.includes('reaccion') ||
+texto.includes('opuesta') ||
+texto.includes('empuja')
+){
+
+ley = 'Tercera Ley de Newton';
+
+instrucciones = `
+<h2>Usa la tarjeta:</h2>
+Tercera Ley de Newton
+`;
+
+}
+
+else{
+
+ley = 'No detectada';
+
+instrucciones =
+'No se pudo detectar automáticamente el problema.';
+
+}
+
+document.getElementById(
+'resultadoProblema'
+).innerHTML = `
+
+<h1>${ley}</h1>
+
+${instrucciones}
+
+`;
+
+}
+
+let chart1;
+
+function resolverPrimeraLey(){
+
+let f1 =
+parseFloat(
+document.getElementById('f1').value
+) || 0;
+
+let f2 =
+parseFloat(
+document.getElementById('f2').value
+) || 0;
+
+let neta = f1 - f2;
+
+document.getElementById('resultado1')
+.innerHTML =
+`Fuerza neta = ${neta} N`;
+
+document.getElementById('procedimiento1')
+.innerHTML = `
+ΣF = ${f1} - ${f2} = ${neta}
+`;
+
+if(chart1){
+chart1.destroy();
+}
+
+chart1 = new Chart(
+document.getElementById('grafica1'),
+{
+type:'bar',
+data:{
+labels:['F1','F2','Neta'],
+datasets:[{
+label:'Newtons',
+data:[f1,f2,neta]
+}]
+}
+});
+
+}
+
+let chart2;
+
+function resolverSegundaLey(){
+
+let masa =
+parseFloat(
+document.getElementById('masa').value
+);
+
+let fuerza =
+parseFloat(
+document.getElementById('fuerza').value
+);
+
+let friccion =
+parseFloat(
+document.getElementById('friccion').value
+) || 0;
+
+if(!masa || !fuerza){
+
+document.getElementById('resultado2')
+.innerHTML =
+'Ingrese masa y fuerza';
+
+return;
+}
+
+let fuerzaNeta =
+fuerza - friccion;
+
+let aceleracion =
+fuerzaNeta / masa;
+
+document.getElementById('resultado2')
+.innerHTML = `
+Aceleración =
+${aceleracion.toFixed(2)} m/s²
+`;
+
+document.getElementById('procedimiento2')
+.innerHTML = `
+
+Fuerza neta = Fuerza - Fricción
+
+<br><br>
+
+Fuerza neta =
+${fuerza} - ${friccion}
+
+<br><br>
+
+Fuerza neta =
+${fuerzaNeta} N
+
+<br><br>
+
+a = F / m
+
+<br><br>
+
+a = ${fuerzaNeta} / ${masa}
+
+<br><br>
+
+a = ${aceleracion.toFixed(2)} m/s²
+
+`;
+
+if(chart2){
+chart2.destroy();
+}
+
+chart2 = new Chart(
+document.getElementById('grafica2'),
+{
+type:'line',
+data:{
+labels:[
+'Masa',
+'Fuerza',
+'Fricción',
+'Aceleración'
+],
+datasets:[{
+label:'Valores',
+data:[
+masa,
+fuerza,
+friccion,
+aceleracion
+]
+}]
+}
+});
+
+let box =
+document.getElementById('box');
+
+box.style.transform =
+`translateX(${aceleracion*40}px)`;
+
+}
+
+let chart3;
+
+function resolverTerceraLey(){
+
+let accion =
+parseFloat(
+document.getElementById('accion').value
+);
+
+if(!accion){
+
+document.getElementById('resultado3')
+.innerHTML =
+'Ingrese una fuerza';
+
+return;
+}
+
+let reaccion = -accion;
+
+document.getElementById('resultado3')
+.innerHTML = `
+Acción = ${accion} N
+<br>
+Reacción = ${reaccion} N
+`;
+
+document.getElementById('procedimiento3')
+.innerHTML = `
+F1 = -F2
+
+<br><br>
+
+${accion} = ${reaccion}
+`;
+
+if(chart3){
+chart3.destroy();
+}
+
+chart3 = new Chart(
+document.getElementById('grafica3'),
+{
+type:'bar',
+data:{
+labels:[
+'Acción',
+'Reacción'
+],
+datasets:[{
+label:'Fuerzas',
+data:[
+accion,
+reaccion
+]
+}]
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>
