@@ -308,7 +308,7 @@ F₁ = -F₂
 <input type="number" id="accion">
 </div>
 
-<button onclick="resolverTercera Ley()">
+<button onclick="resolverTerceraLey()">
 Resolver Tercera Ley
 </button>
 
@@ -772,15 +772,20 @@ let chart3;
 function resolverTerceraLey(){
 
 let accion =
-parseFloat(
+Number(
 document.getElementById('accion').value
 );
 
-if(!accion){
+if(
+document.getElementById('accion').value === ''
+){
 
 document.getElementById('resultado3')
 .innerHTML =
-'Ingrese una fuerza';
+'Ingrese una fuerza válida';
+
+document.getElementById('procedimiento3')
+.innerHTML = '';
 
 return;
 }
@@ -788,19 +793,35 @@ return;
 let reaccion = -accion;
 
 document.getElementById('resultado3')
-.innerHTML = `
+.innerHTML =
+
+`
+<h3>Resultado</h3>
+
 Acción = ${accion} N
-<br>
+
+<br><br>
+
 Reacción = ${reaccion} N
 `;
 
 document.getElementById('procedimiento3')
-.innerHTML = `
-F1 = -F2
+.innerHTML =
+
+`
+<b>Procedimiento</b>
 
 <br><br>
 
-${accion} = ${reaccion}
+F₁ = -F₂
+
+<br><br>
+
+F₁ = ${accion} N
+
+<br>
+
+F₂ = ${reaccion} N
 `;
 
 if(chart3){
@@ -817,7 +838,7 @@ labels:[
 'Reacción'
 ],
 datasets:[{
-label:'Fuerzas',
+label:'Fuerzas (N)',
 data:[
 accion,
 reaccion
